@@ -1,0 +1,1 @@
+{"name":"openhr-agent","private":true,"scripts":{"web:dev":"npm --prefix apps/web run dev","web:test":"npm --prefix apps/web test","web:build":"npm --prefix apps/web run build"}}
