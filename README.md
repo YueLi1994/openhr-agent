@@ -1,6 +1,6 @@
 # OpenHR Agent
 
-OpenHR Agent is an independently built, open-source reference framework for safe, modular, and evaluable HR AI agents. Phase 1 provides a runnable foundation only—not a production HR product.
+OpenHR Agent is an independently built, open-source reference framework for safe, modular, and evaluable HR AI agents. Phase 2 adds a minimal deterministic routing, retrieval, grounded-answer, and escalation workflow—not a production HR product.
 
 > All organizations, people, policies, and questions in this repository are fictional or synthetic. The example organization is **Acme Corporation**.
 
@@ -21,10 +21,10 @@ OpenHR Agent is an independently built, open-source reference framework for safe
 ```mermaid
 flowchart LR
   U[User] --> W[React + Vite web]
-  W -->|GET /health| A[FastAPI API]
-  A --> C[agent_core]
-  C --> M[MockProvider]
-  C -. future retrieval .-> K[Markdown + JSON knowledge]
+  W -->|POST /api/v1/chat| A[FastAPI API]
+  A --> C[agent_core workflow]
+  C --> M[Deterministic Mock Agent]
+  C --> K[Markdown + JSON knowledge]
 ```
 
 - `apps/web`: React, TypeScript, Vite, Vitest
@@ -33,7 +33,7 @@ flowchart LR
 - `knowledge/fictional_company`: fictional Acme Corporation policies
 - `examples`: synthetic example records and questions
 
-See [architecture](docs/architecture.md), [privacy](docs/data-privacy.md), and [roadmap](docs/roadmap.md).
+See [architecture](docs/architecture.md), [routing](docs/routing.md), [safety](docs/safety.md), [retrieval](docs/retrieval.md), [privacy](docs/data-privacy.md), and [roadmap](docs/roadmap.md).
 
 ## Local setup
 
@@ -81,15 +81,24 @@ mypy apps packages
 
 All sample content was created for this public project from scratch. It contains no employer, client, or internal prompts, workflows, policies, employee data, endpoints, screenshots, secrets, or proprietary code. Never add real personal data or confidential material. See [data privacy](docs/data-privacy.md) and [security policy](SECURITY.md).
 
+## Agent API
+
+- `POST /api/v1/chat`: run the deterministic workflow and return `AgentResponse`.
+- `GET /api/v1/domains`: list supported routing domains.
+- `GET /api/v1/knowledge/sources`: list fictional local sources.
+- `GET /health`: service health.
+
+The workflow validates input, blocks simple injection attempts, routes single or multiple intents, retrieves local policy paragraphs, produces cited answers, and escalates high-risk or ungrounded requests. It never calls a real model.
+
 ## Current limitations
 
-The API exposes only health status; the UI demonstrates connectivity; the provider is a deterministic mock. Retrieval, authentication, authorization, persistence, evaluation suites, and real model adapters are intentionally not implemented.
+Routing and safety checks use finite English phrase lists; retrieval uses lexical overlap rather than semantic search. There is no authentication, authorization, persistence, production-grade privacy control, complete evaluation suite, or real model adapter. Do not process real personal data.
 
 ## Roadmap
 
-1. Foundation (current): runnable web/API skeleton and mock provider.
-2. Safe retrieval over fictional knowledge with citations.
-3. Evaluation fixtures, guardrails, and observability.
+1. Foundation: runnable web/API skeleton and mock provider.
+2. Core workflow (current): routing, safe local retrieval, citations, and escalation.
+3. Evaluation fixtures, expanded guardrails, and observability.
 4. Optional model adapters and reference deployment guidance.
 
 ## Contributing

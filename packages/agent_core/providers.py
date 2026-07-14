@@ -2,6 +2,8 @@ from typing import Protocol
 
 from pydantic import BaseModel
 
+from packages.agent_core.models import AgentResponse, HRRequest
+
 
 class ProviderResponse(BaseModel):
     text: str
@@ -23,3 +25,9 @@ class MockProvider:
             text=f"Mock response for: {normalized}" if normalized else "Mock response.",
             model="mock-v1",
         )
+
+    async def respond(self, request: HRRequest) -> AgentResponse:
+        """Run the rule-based, knowledge-grounded HR workflow without a model call."""
+        from packages.agent_core.workflow import HRAgentWorkflow
+
+        return await HRAgentWorkflow().run(request)

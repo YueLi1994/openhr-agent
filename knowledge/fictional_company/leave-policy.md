@@ -1,7 +1,9 @@
-# Acme Corporation Fictional Leave Policy
+# Acme Corporation Leave Policy
 
-> Demonstration content only. Effective date: 2026-01-01. Acme Corporation is fictional.
+> FICTIONAL AND SYNTHETIC: Created solely for the OpenHR Agent demonstration. Acme Corporation and every policy detail are fictional.
 
-Synthetic full-time employees receive 18 days of paid personal leave per fictional calendar year. Requests of three or more consecutive workdays should be submitted at least ten days ahead when practical. Unexpected illness may be reported on the same day. Managers should respond within three workdays and must not request medical details beyond what fictional law and this demonstration require.
+Full-time synthetic employees receive 18 days of annual leave per fictional calendar year. Up to five unused days may roll into the following year.
 
-Unused leave: up to five days roll into the next fictional year. This policy is not legal or HR advice.
+Annual leave requests should be submitted in the fictional HR portal at least five workdays before the first leave day when practical. A manager acknowledges the request, while HR handles eligibility questions.
+
+Synthetic employees may request up to 12 weeks of parental leave by opening an HR service ticket at least 30 days before the expected start date when practical. The ticket should include the requested dates, but must not include unnecessary medical details. Employees should separately review benefit changes with HR.
