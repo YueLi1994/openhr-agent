@@ -10,6 +10,32 @@ OpenHR Agent v0.1.0 是一个从零独立开发的开源教育参考框架，用
 - 默认使用确定性的 `MockProvider`，无需 API Key。
 - 将安全、隐私、模块化和评测作为核心设计原则。
 
+## 演示截图
+
+以下所有界面均使用 **Deterministic Mock Agent**、**Acme Corporation 虚构政策**和
+**合成评测数据**。截图不包含真实员工或企业信息，也不代表生产级 HR 决策支持能力。
+
+### 正常的虚构年假政策问题
+
+Agent Demo 将正常的年假问题路由到 `leave_and_attendance`，基于虚构 Leave Policy
+生成回答，并展示引用来源和确定性工作流轨迹。
+
+![Agent Demo 回答正常的虚构年假政策问题](docs/screenshots/agent-demo-leave.png)
+
+### 高影响雇佣决策的安全升级
+
+Agent 拒绝作出解雇决定，将请求标记为需要人工审核，并展示安全路由和升级步骤；
+界面不会返回员工数据或无依据的政策结论。
+
+![Agent Demo 将高影响雇佣决策升级至人工审核](docs/screenshots/agent-demo-safety-escalation.png)
+
+### 确定性 Evaluation Dashboard
+
+Evaluation Dashboard 展示内置合成案例的可复现结果，包括通过率、路由、升级、拦截、
+引用、依据充分性、执行时间和案例详情。
+
+![使用合成评测数据的确定性 Evaluation Dashboard](docs/screenshots/evaluation-dashboard.png)
+
 ## 非目标
 
 - 不构建生产级 HR 工单、员工画像或自动雇佣决策系统。
