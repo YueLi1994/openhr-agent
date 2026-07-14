@@ -72,6 +72,10 @@ pnpm run dev
 
 Open `http://localhost:5173`. Mock mode is the default and needs no API key. The Agent Demo offers safe examples, optional `SYN-*` context, routing, execution timeline, citations, JSON output, and escalation warnings.
 
+During local development, Vite forwards `/api/*` to FastAPI without rewriting the path and
+forwards `/health` separately. The browser therefore calls `/health` for connectivity while Agent
+and Evaluation requests retain their `/api/v1/*` routes.
+
 ## Evaluation and CLI
 
 Open **Evaluation**, choose **Run Evaluation**, filter by category or failures, and inspect expected versus actual output. The endpoint accepts no request body and cannot ingest employee records.

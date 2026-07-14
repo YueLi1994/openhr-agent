@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, test, vi } from 'vitest'
-import { AgentResponse, App, EvaluationSummary, EXAMPLE_QUESTIONS } from './App'
+import { AgentResponse, API_PATHS, App, EvaluationSummary, EXAMPLE_QUESTIONS } from './App'
 
 const success: AgentResponse = {
   answer: 'Full-time employees receive 18 days. [leave-policy]',
@@ -25,10 +25,12 @@ function mockFetch(chat: AgentResponse = success) {
 }
 
 test('renders the HR Agent page', async () => {
-  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true }))
+  const fetchMock = vi.fn().mockResolvedValue({ ok: true })
+  vi.stubGlobal('fetch', fetchMock)
   render(<App />)
   expect(screen.getByRole('heading', { name: /openhr agent/i })).toBeInTheDocument()
   expect(await screen.findByText('API connected')).toBeInTheDocument()
+  expect(fetchMock).toHaveBeenCalledWith('/health', expect.any(Object))
 })
 
 test('selects an example question', () => {
@@ -44,6 +46,7 @@ test('shows a successful Agent answer', async () => {
   fireEvent.click(screen.getByRole('button', { name: /run agent workflow/i }))
   expect((await screen.findAllByText(/Full-time employees receive 18 days/)).length).toBeGreaterThan(0)
   expect(screen.getByText('88%')).toBeInTheDocument()
+  expect(fetch).toHaveBeenLastCalledWith(API_PATHS.chat, expect.objectContaining({ method: 'POST' }))
 })
 
 test('shows cited knowledge sources', async () => {
@@ -94,6 +97,7 @@ test('runs evaluation and displays summary metrics', async () => {
   fireEvent.click(screen.getByRole('button', { name: 'Run Evaluation' }))
   expect(await screen.findByText('96.9%')).toBeInTheDocument()
   expect(screen.getByText('31 / 1')).toBeInTheDocument()
+  expect(fetch).toHaveBeenLastCalledWith(API_PATHS.evaluationRun, { method: 'POST' })
 })
 
 test('filters failed evaluation cases and shows failure reasons', async () => {
