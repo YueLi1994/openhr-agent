@@ -4,6 +4,7 @@
 
 - [ ] Frontend typecheck, tests, and build pass (if applicable)
 - [ ] Backend tests and Ruff pass (if applicable)
+- [ ] Deterministic evaluation passes (if applicable)
 - [ ] Tests use fictional or synthetic data only
 
 ## Public-content checklist

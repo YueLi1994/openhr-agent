@@ -1,6 +1,6 @@
 # OpenHR Agent
 
-OpenHR Agent 是一个从零独立开发的开源参考框架，用于探索如何构建安全、模块化、可评测的 HR AI Agent。第二阶段加入最小的确定性路由、检索、引用回答和人工升级工作流，但仍不是生产级人力资源产品。
+OpenHR Agent v0.1.0 是一个从零独立开发的开源教育参考框架，用于探索如何构建安全、模块化、可评测的 HR AI Agent。第三阶段加入 32 条合成案例、确定性评测 Runner、API、CLI、报告和 Evaluation Dashboard，但仍不是生产级人力资源产品。
 
 > 仓库中的组织、人物、政策和问题均为虚构或合成内容，示例公司统一为 **Acme Corporation**。
 
@@ -87,19 +87,32 @@ mypy apps packages
 - `GET /api/v1/domains`：列出路由领域。
 - `GET /api/v1/knowledge/sources`：列出虚构本地来源。
 - `GET /health`：服务健康检查。
+- `GET /api/v1/evaluations/cases`：读取内置合成评测案例。
+- `POST /api/v1/evaluations/run`：运行完整评测；不接收请求体或员工数据。
+- `GET /api/v1/evaluations/latest`：读取本进程最近一次评测。
 
 工作流执行输入验证、简单注入拦截、单/多意图路由、本地政策检索、带引用回答以及高风险或无依据请求升级。它不会调用真实模型。
 
+## Evaluation 与 CLI
+
+前端 **Evaluation** 页面可以运行全套确定性 Mock Agent 评测、查看汇总指标、按分类或失败案例筛选，并比较预期和实际 JSON。评测不调用真实模型、外部 API，也不需要密钥。
+
+```bash
+python -m packages.agent_core.evaluation
+```
+
+命令将 JSON 和 Markdown 报告写入已被 Git 忽略的 `reports/`，任一案例失败时返回非零退出码。详见[评测说明](docs/evaluation.md)、[演示指南](docs/demo-guide.md)和[发布检查表](docs/release-checklist.md)。
+
 ## 当前限制
 
-路由和安全检查依赖有限的英文词组，检索为词法匹配而非语义搜索。尚无认证、授权、持久化、生产级隐私控制、完整评测或真实模型适配器。不得处理真实个人数据。
+路由和安全检查依赖有限的英文词组，检索为词法匹配而非语义搜索。尚无认证、授权、持久化、生产级隐私控制、监管验证或真实模型适配器。评测延迟仅为本地 Mock 工作流数据，不代表生产指标。不得处理真实个人数据。
 
 ## Roadmap
 
 1. 基础架构：可运行的前后端骨架与 Mock Provider。
-2. 核心工作流（当前）：路由、安全本地检索、引用和人工升级。
-3. 评测数据、扩展护栏与可观测性。
-4. 可选模型适配器与参考部署方案。
+2. 核心工作流：路由、安全本地检索、引用和人工升级。
+3. v0.1.0（当前）：确定性评测、Dashboard、CLI、报告与发布文档。
+4. 可选 Provider 接口、更强对抗测试、无障碍与本地化参考。
 
 ## 贡献方式
 

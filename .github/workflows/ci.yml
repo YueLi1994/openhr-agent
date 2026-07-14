@@ -19,6 +19,7 @@ jobs:
         with:
           version: 10
       - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
       - run: pnpm run typecheck
       - run: pnpm test
       - run: pnpm run build
@@ -33,3 +34,15 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - run: pytest
       - run: ruff check .
+      - run: mypy apps packages
+  deterministic-evaluation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - name: Run synthetic deterministic evaluation
+        run: python -m packages.agent_core.evaluation

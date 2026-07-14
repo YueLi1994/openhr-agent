@@ -37,3 +37,17 @@ flowchart TD
 The web application owns presentation. FastAPI owns transport and validation. `agent_core` owns strict models, routing, safety, retrieval, and workflow orchestration. Markdown policies are local and reviewable. No model or external network call occurs in the default path.
 
 See [routing](routing.md), [safety](safety.md), and [retrieval](retrieval.md).
+
+## Evaluation lifecycle
+
+```mermaid
+flowchart LR
+  Cases[Versioned synthetic JSON] --> Runner[EvaluationRunner]
+  Runner --> Workflow[Same deterministic workflow]
+  Workflow --> Checks[Route, multi-intent, escalation, block, citations, grounding, Pydantic]
+  Checks --> Summary[EvaluationSummary]
+  Summary --> API[Evaluation API]
+  Summary --> CLI[JSON and Markdown reports]
+```
+
+The runner is in-process, sequential, reproducible, and network-free. API state is in memory and resets with the server.

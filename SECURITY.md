@@ -1,6 +1,6 @@
 # Security Policy
 
-This project is in an early reference stage and has no supported production release. Do not use it for real employee data or employment decisions.
+Version 0.1.0 is an educational reference release, not a supported production HR product. Do not use it for real employee data or employment decisions. Phrase-based safeguards, local evaluation, and Mock mode are not substitutes for authentication, authorization, privacy engineering, legal review, or professional HR judgment.
 
 Report vulnerabilities privately using GitHub's private vulnerability reporting feature when available. Do not open a public issue containing exploit details, personal data, credentials, or confidential material. Include affected version, impact, and minimal synthetic reproduction steps. Maintainers will acknowledge reports as capacity allows.
 

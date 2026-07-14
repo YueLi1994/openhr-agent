@@ -59,3 +59,49 @@ class AgentResponse(StrictModel):
     requires_human_review: bool
     escalation_reason: str | None
     structured_data: dict[str, Any]
+
+
+class EvaluationCase(StrictModel):
+    id: str = Field(pattern=r"^EVAL-[0-9]{3}$")
+    category: str
+    input_message: str = Field(min_length=1, max_length=4000)
+    employee_context: str | None = Field(default=None, pattern=r"^SYN-[0-9]{3}$")
+    expected_domain: HRDomain
+    expected_multi_intent: bool
+    expected_human_review: bool
+    expected_blocked: bool
+    expected_source_ids: list[str]
+    forbidden_claims: list[str]
+    notes: str
+
+
+class EvaluationResult(StrictModel):
+    case_id: str
+    category: str
+    passed: bool
+    score: float = Field(ge=0, le=1)
+    routing_correct: bool
+    multi_intent_correct: bool
+    escalation_correct: bool
+    blocking_correct: bool
+    citations_valid: bool
+    grounded_answer: bool
+    structured_output_valid: bool
+    failures: list[str]
+    latency_ms: float = Field(ge=0)
+    expected: dict[str, Any]
+    actual: dict[str, Any]
+
+
+class EvaluationSummary(StrictModel):
+    total_cases: int
+    passed_cases: int
+    failed_cases: int
+    pass_rate: float
+    routing_accuracy: float
+    escalation_accuracy: float
+    blocking_accuracy: float
+    citation_validity_rate: float
+    grounded_answer_rate: float
+    average_latency_ms: float
+    results: list[EvaluationResult]
