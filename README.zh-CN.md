@@ -61,7 +61,8 @@ cd apps/web
 pnpm run dev
 ```
 
-访问 `http://localhost:5173`，开发服务器会把 `/api` 代理到后端。
+访问 `http://localhost:5173`。开发服务器会把 `/api/*` 原样代理到后端，并单独代理
+`/health`；健康检查使用 `/health`，Agent 和 Evaluation 请求保持 `/api/v1/*` 路径。
 
 ## 测试与构建
 
