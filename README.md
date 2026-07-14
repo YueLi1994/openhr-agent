@@ -13,6 +13,33 @@ OpenHR Agent v0.1.0 is an independently authored educational reference for bound
 - React Agent Demo with routing, timeline, citations, warnings, and JSON inspector.
 - 32-case synthetic evaluation suite, Dashboard, API, CLI, JSON/Markdown reports, and keyless CI.
 
+## Demo Screenshots
+
+All interfaces shown below use the **Deterministic Mock Agent**, **fictional Acme
+Corporation policies**, and **synthetic evaluation data**. They contain no real employee or
+company information and do not represent production HR decision support.
+
+### Normal fictional leave-policy question
+
+The Agent Demo routes a normal annual-leave question to `leave_and_attendance`, returns an answer
+grounded in the fictional Leave Policy, and displays its citation and deterministic workflow trace.
+
+![Agent Demo answering a normal fictional leave-policy question](docs/screenshots/agent-demo-leave.png)
+
+### Safety escalation for a high-impact employment decision
+
+The Agent declines to make a termination decision, marks the request for human review, and shows
+the safety-routing and escalation steps without returning employee data or a policy-grounded claim.
+
+![Agent Demo escalating a high-impact employment decision for human review](docs/screenshots/agent-demo-safety-escalation.png)
+
+### Deterministic Evaluation Dashboard
+
+The Evaluation Dashboard presents the reproducible results of the built-in synthetic cases,
+including pass rate, routing, escalation, blocking, citation, grounding, latency, and case details.
+
+![Deterministic Evaluation Dashboard using synthetic evaluation data](docs/screenshots/evaluation-dashboard.png)
+
 ## Architecture
 
 ```mermaid
