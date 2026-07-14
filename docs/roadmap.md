@@ -1,17 +1,8 @@
 # Roadmap
 
-## Phase 1 — Foundation
+- Phase 1 — complete: React/FastAPI foundation, Mock provider, synthetic fixtures, CI.
+- Phase 2 — complete: deterministic routing, local retrieval, citations, safety escalation.
+- Phase 3 / v0.1.0 — complete: 32-case evaluation, reports, API, Dashboard, demo polish, release docs.
+- Phase 4 — proposed: opt-in provider interfaces, policy-version regression fixtures, accessibility and localization, expanded adversarial tests, reference authentication/authorization patterns, and threat modeling.
 
-Runnable React/FastAPI skeleton, strict checks, deterministic mock provider, fictional knowledge, synthetic fixtures, documentation, and CI.
-
-## Phase 2 — Safe retrieval
-
-Local Markdown ingestion, cited answers, refusal boundaries, and policy-version metadata using only fictional content.
-
-## Phase 3 — Evaluation
-
-Repeatable safety, grounding, privacy, and quality evaluation datasets; structured traces without personal data.
-
-## Phase 4 — Optional integrations
-
-Explicitly configured provider adapters, reference authorization patterns, threat modeling, and deployment guidance. Real employment decisions remain out of scope.
+Real personal data, production HR case management, legal conclusions, and automated employment decisions remain permanently out of scope.

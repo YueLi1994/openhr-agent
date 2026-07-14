@@ -1,0 +1,23 @@
+name: Evaluation case
+description: Propose a synthetic deterministic evaluation case
+title: "[Evaluation]: "
+labels: [evaluation]
+body:
+  - type: markdown
+    attributes:
+      value: Use only fictional Acme Corporation policy and synthetic data. Never include real employee information.
+  - type: input
+    id: category
+    attributes: {label: Category}
+    validations: {required: true}
+  - type: textarea
+    id: case
+    attributes: {label: Synthetic input and expected behavior}
+    validations: {required: true}
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Public-data confirmation
+      options:
+        - label: This case contains no real person, company, confidential policy, prompt, endpoint, or secret.
+          required: true

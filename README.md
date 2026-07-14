@@ -1,114 +1,117 @@
 # OpenHR Agent
 
-OpenHR Agent is an independently built, open-source reference framework for safe, modular, and evaluable HR AI agents. Phase 2 adds a minimal deterministic routing, retrieval, grounded-answer, and escalation workflow—not a production HR product.
+OpenHR Agent v0.1.0 is an independently authored educational reference for bounded, explainable HR-agent workflows. It combines deterministic routing, local fictional-policy retrieval, citations, safety escalation, structured traces, and reproducible evaluation. It is **not** a production HR product and provides no legal, HR, benefits, payroll, or employment-decision advice.
 
-> All organizations, people, policies, and questions in this repository are fictional or synthetic. The example organization is **Acme Corporation**.
+> Every organization, person, policy, prompt, and evaluation case is fictional or synthetic. The demo organization is **Acme Corporation**. Never submit real employee data.
 
-## Goals
+## Core capabilities
 
-- Demonstrate a clean web/API/agent-core architecture.
-- Run without API keys through a deterministic `MockProvider`.
-- Make safety, privacy, modularity, and evaluation first-class concerns.
-
-## Non-goals
-
-- Production HR case management, employee profiling, or automated employment decisions.
-- Legal, HR, payroll, benefits, or employment advice.
-- Integration with real employee systems or proprietary company workflows.
+- API-key-free deterministic Mock Agent; strict Pydantic inputs and outputs.
+- Single/multi-intent routing across six HR domains plus unsupported requests.
+- Local grounded answers with verified source IDs and explicit no-answer behavior.
+- Safety refusal or human escalation for injection, private-data access, and employment decisions.
+- React Agent Demo with routing, timeline, citations, warnings, and JSON inspector.
+- 32-case synthetic evaluation suite, Dashboard, API, CLI, JSON/Markdown reports, and keyless CI.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  U[User] --> W[React + Vite web]
-  W -->|POST /api/v1/chat| A[FastAPI API]
-  A --> C[agent_core workflow]
-  C --> M[Deterministic Mock Agent]
-  C --> K[Markdown + JSON knowledge]
+  UI[React Demo and Evaluation] --> API[FastAPI]
+  API --> CORE[Agent Core]
+  CORE --> SAFE[Safety gate]
+  CORE --> ROUTE[Deterministic router]
+  CORE --> KB[Local fictional policies]
+  CORE --> VALIDATE[Grounding and output validation]
 ```
 
-- `apps/web`: React, TypeScript, Vite, Vitest
-- `apps/api`: FastAPI application
-- `packages/agent_core`: provider abstractions and default mock implementation
-- `knowledge/fictional_company`: fictional Acme Corporation policies
-- `examples`: synthetic example records and questions
+### Agent workflow
 
-See [architecture](docs/architecture.md), [routing](docs/routing.md), [safety](docs/safety.md), [retrieval](docs/retrieval.md), [privacy](docs/data-privacy.md), and [roadmap](docs/roadmap.md).
-
-## Local setup
-
-Prerequisites: Node.js 20+, pnpm 10+, and Python 3.11+.
-
-```bash
-cp .env.example .env
-cd apps/web && pnpm install
-cd ../api && python -m venv .venv
-# activate the virtual environment, then:
-python -m pip install -e "../..[dev]"
+```mermaid
+flowchart TD
+  A[Validate request] --> B[Safety check]
+  B -->|unsafe| C[Block or human review]
+  B --> D[Route intents]
+  D --> E[Check synthetic context]
+  E --> F[Retrieve local policy]
+  F -->|none| G[Do not invent; escalate]
+  F --> H[Cited answer and structured trace]
 ```
 
-No API key is required. Start the API from the repository root:
+### Evaluation workflow
+
+```mermaid
+flowchart LR
+  CASES[Built-in synthetic cases] --> RUNNER[Deterministic runner]
+  RUNNER --> AGENT[Mock Agent workflow]
+  AGENT --> ASSERT[Routing safety citation grounding schema assertions]
+  ASSERT --> SUMMARY[Summary and per-case results]
+  SUMMARY --> REPORTS[JSON and Markdown reports]
+```
+
+See [architecture](docs/architecture.md), [evaluation](docs/evaluation.md), [safety](docs/safety.md), and [demo guide](docs/demo-guide.md).
+
+## Quick start
+
+Prerequisites: Python 3.11+, Node.js 20+, and pnpm 10+.
 
 ```bash
-cd ../..
+python -m venv .venv
+# activate it, then
+python -m pip install -e ".[dev]"
+cd apps/web && pnpm install && cd ../..
 uvicorn apps.api.app.main:app --reload --port 8000
 ```
 
-Start the web app in another terminal:
+In another terminal:
 
 ```bash
 cd apps/web
 pnpm run dev
 ```
 
-Open `http://localhost:5173`. The development server proxies `/api` to the API.
+Open `http://localhost:5173`. Mock mode is the default and needs no API key. The Agent Demo offers safe examples, optional `SYN-*` context, routing, execution timeline, citations, JSON output, and escalation warnings.
 
-## Test and build
+## Evaluation and CLI
+
+Open **Evaluation**, choose **Run Evaluation**, filter by category or failures, and inspect expected versus actual output. The endpoint accepts no request body and cannot ingest employee records.
 
 ```bash
-cd apps/web
-pnpm run typecheck
-pnpm test
-pnpm run build
-
-# from repository root
-pytest
-ruff check .
-mypy apps packages
+python -m packages.agent_core.evaluation
 ```
 
-## Data, privacy, and intellectual property
+The command runs all built-in cases, prints a summary, writes `reports/evaluation-latest.json` and `.md`, and exits nonzero on failure. `reports/` is ignored by Git.
 
-All sample content was created for this public project from scratch. It contains no employer, client, or internal prompts, workflows, policies, employee data, endpoints, screenshots, secrets, or proprietary code. Never add real personal data or confidential material. See [data privacy](docs/data-privacy.md) and [security policy](SECURITY.md).
+## API
 
-## Agent API
+- `GET /health`
+- `POST /api/v1/chat`
+- `GET /api/v1/domains`
+- `GET /api/v1/knowledge/sources`
+- `GET /api/v1/evaluations/cases`
+- `POST /api/v1/evaluations/run` (no body)
+- `GET /api/v1/evaluations/latest`
 
-- `POST /api/v1/chat`: run the deterministic workflow and return `AgentResponse`.
-- `GET /api/v1/domains`: list supported routing domains.
-- `GET /api/v1/knowledge/sources`: list fictional local sources.
-- `GET /health`: service health.
+## Checks
 
-The workflow validates input, blocks simple injection attempts, routes single or multiple intents, retrieves local policy paragraphs, produces cited answers, and escalates high-risk or ungrounded requests. It never calls a real model.
+```bash
+ruff check . && mypy apps packages && pytest
+cd apps/web
+pnpm run lint && pnpm run typecheck && pnpm test && pnpm run build
+```
+
+## Privacy, intellectual property, and safety boundaries
+
+All repository content was created for this public project and excludes real companies, employees, customers, internal prompts, APIs, screenshots, policies, credentials, and confidential information. Do not connect real HR systems or process personal data. Phrase-list safeguards are illustrative, not comprehensive security controls. Humans remain responsible for every real-world HR action; this project must not rank candidates or decide hiring, promotion, pay, discipline, or termination.
 
 ## Current limitations
 
-Routing and safety checks use finite English phrase lists; retrieval uses lexical overlap rather than semantic search. There is no authentication, authorization, persistence, production-grade privacy control, complete evaluation suite, or real model adapter. Do not process real personal data.
+English keyword routing and lexical retrieval are intentionally simple. There is no authentication, authorization, persistence, semantic retrieval, real-model adapter, production privacy control, or regulatory validation. Latency values describe only the local deterministic workflow and are not production metrics.
 
 ## Roadmap
 
-1. Foundation: runnable web/API skeleton and mock provider.
-2. Core workflow (current): routing, safe local retrieval, citations, and escalation.
-3. Evaluation fixtures, expanded guardrails, and observability.
-4. Optional model adapters and reference deployment guidance.
+Phase 4 may explore opt-in provider interfaces, stronger policy-version fixtures, threat-model tests, accessibility, localization, and reference authorization patterns while keeping employment decisions out of scope. See [roadmap](docs/roadmap.md).
 
-## Contributing
+## Contributing and license
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Please use synthetic data only.
-
-## Disclaimer
-
-OpenHR Agent is an educational reference framework. It does **not** provide legal, human-resources, benefits, payroll, or employment-decision advice. Human review and qualified professional guidance are required for real-world use.
-
-## License
-
-Licensed under the [Apache License 2.0](LICENSE).
+Read [CONTRIBUTING.md](CONTRIBUTING.md), [Code of Conduct](CODE_OF_CONDUCT.md), and [Security Policy](SECURITY.md). Contributions must use synthetic data. Licensed under [Apache-2.0](LICENSE).
